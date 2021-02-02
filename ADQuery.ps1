@@ -519,7 +519,7 @@ $txtPGC.Text = (((($ccommand |select PrimaryGroup).PrimaryGroup).Trim("CN=")).su
 $txtSAN.Text = ($ccommand |select SamAccountName).SamAccountName
 $txtSerial.Text = ($ccommand).Serialnumber
 
-if((($command1 |select directReports).directReports) -eq $null)
+if((($ccommand |select MemberOf).MemberOf) -eq $null)
 {
 $txtMOC.Text = ""
 }else {
