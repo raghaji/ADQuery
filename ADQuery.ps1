@@ -570,20 +570,38 @@ $BtnGroup.Add_click({
     
    $inputgroupname = $txtGroupName.text
    $gcommand = Get-ADGroup $inputgroupname -Properties *
-   
-   $txtCD.text = ""
-   $txtgcat.text = ""
-   $txtgcn.text = ""
-   $txtgd.text = ""
-   $txtGDN.text = ""
-   $txtGManBy.text = ""
-   $txtgmemby.text = ""
-   $txtgml.text = ""
-   $txtGName.text = ""
-   $txtGS.text = ""
-   $txtPFAD.text = ""
-   $txtsaman.text = ""
 
+   $txtCD.text = ($gcommand|Select-Object Created).Created
+   $txtgcat.text = ($gcommand|Select-Object GroupCategory).GroupCategory
+   $txtgcn.text = ($gcommand|Select-Object CanonicalName).CanonicalName
+   $txtgd.text = ($gcommand|Select-Object Description).Description
+   $txtGDN.text = ($gcommand|Select-Object DistinguishedName).DistinguishedName
+   $txtGManBy.text = ((($gcommand|Select-Object ManagedBy).ManagedBy).Trim("CN=")).SUBSTRING(0,(((($gcommand|Select-Object ManagedBy).ManagedBy).Trim("CN=")).indexOf(',')))
+   $txtGName.text = ($gcommand|Select-Object Name).name
+   $txtGS.text = ($gcommand|Select-Object GroupScope).GroupScope
+   $txtPFAD.text = ($gcommand|Select-Object ProtectedFromAccidentalDeletion).ProtectedFromAccidentalDeletion
+   $txtsaman.text = ($gcommand|Select-Object SamAccountName).SamAccountName
+
+
+   if((($gcommand |Select-Object MemberOf).MemberOf) -eq $null)
+    {
+        $txtgmemby.text = ""
+    }else {
+        foreach ($item in (($gcommand |Select-Object MemberOf).MemberOf))
+        {
+            $txtgmemby.AppendText((($item.Trim("CN=")).substring(0,($item.Trim("CN=")).IndexOf(','))) + "`n")
+        }
+    }
+
+    if((($gcommand |Select-Object member).member) -eq $null)
+    {
+        $txtgml.text = ""
+    }else {
+        foreach ($item in (($gcommand |Select-Object member).member))
+        {
+            $txtgml.AppendText((($item.Trim("CN=")).substring(0,($item.Trim("CN=")).IndexOf(','))) + "`n")
+        }
+    }
 
 })
 #endregion Group
@@ -601,6 +619,26 @@ $txtwmicmn = $window.FindName("txtwmicmn")
 #Find Button from created XAML Window and store it in variable.
 $BtnComputerWmic = $window.FindName("BtnComputerWmic")
 #Declear acton for botton.
+
+$BtnComputerWmic.Add_click({
+
+
+
+    $txtuuid.text = ""
+    $txtwmicCN.text = ""
+    $txtWmiccu.text = ""
+    $txtWmicManu.text = ""
+    $txtwmicmn.text = ""
+
+
+    $inputcomputernamefor = $txtComputerwmicName.text
+    $txtuuid.text = (Get-WmiObject -ComputerName $inputcomputernamefor -Class win32_computersystemproduct -Property UUID,Version |Select-Object Version,UUID).UUID
+    $txtwmicCN.text = $inputcomputernamefor
+    $txtWmiccu.text = (Get-WmiObject -ComputerName $inputcomputernamefor –Class Win32_ComputerSystem | Select-Object UserName).username
+    $txtWmicManu.text = (Get-WmiObject -ComputerName $inputcomputernamefor -Class Win32_BIOS -Property Manufacturer |Select-Object Manufacturer).Manufacturer
+    $txtwmicmn.text = (Get-WmiObject -ComputerName $inputcomputernamefor -Class win32_computersystemproduct -Property UUID,Version |Select-Object Version,UUID).version
+    
+})
 
 
 #endregion WMIC
