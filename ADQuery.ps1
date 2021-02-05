@@ -446,8 +446,6 @@ $txtAcExDate.Text = ""
 
 #endregion User
 
-
-
 #region Computer
 #Find Input Text box from created XAML Window and store it in variable.
 $txtComputerName = $window.FindName("txtComputerName")
@@ -555,7 +553,39 @@ $txtsaman = $window.FindName("txtsaman")
 #Find Button from created XAML Window and store it in variable.
 $BtnGroup = $window.FindName("BtnGroup")
 #Declear acton for botton.
+$BtnGroup.Add_click({
+    $txtCD.text = ""
+    $txtgcat.text = ""
+    $txtgcn.text = ""
+    $txtgd.text = ""
+    $txtGDN.text = ""
+    $txtGManBy.text = ""
+    $txtgmemby.text = ""
+    $txtgml.text = ""
+    $txtGName.text = ""
+    $txtGS.text = ""
+    $txtPFAD.text = ""
+    $txtsaman.text = ""
 
+    
+   $inputgroupname = $txtGroupName.text
+   $gcommand = Get-ADGroup $inputgroupname -Properties *
+   
+   $txtCD.text = ""
+   $txtgcat.text = ""
+   $txtgcn.text = ""
+   $txtgd.text = ""
+   $txtGDN.text = ""
+   $txtGManBy.text = ""
+   $txtgmemby.text = ""
+   $txtgml.text = ""
+   $txtGName.text = ""
+   $txtGS.text = ""
+   $txtPFAD.text = ""
+   $txtsaman.text = ""
+
+
+})
 #endregion Group
 
 
