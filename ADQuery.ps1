@@ -362,55 +362,58 @@ function getuserdetails ($param1)
 $command1 = Get-ADUser $param1 -Properties *
 $txtDName.Text = ($command1 |Select-Object name).name
 $txtDNName.Text = ($command1 |Select-Object DistinguishedName).DistinguishedName
-$txtEmailID.Text = ($command1 |select EmailAddress).EmailAddress
+$txtEmailID.Text = ($command1 |Select-Object EmailAddress).EmailAddress
 $txtFName.Text = ($command1 |Select-Object GivenName).GivenName
 $txtgetUserID.Text = ($command1 |Select-Object SamAccountName).SamAccountName
-$txtHD.Text = ($command1 |select HomeDirectory).HomeDirectory
-$txtLBPA.Text = ($command1 |select LastBadPasswordAttempt).LastBadPasswordAttempt
-$txtLLDate.Text = ($command1 |select LastLogonDate).LastLogonDate
+$txtHD.Text = ($command1 |Select-Object HomeDirectory).HomeDirectory
+$txtLBPA.Text = ($command1 |Select-Object LastBadPasswordAttempt).LastBadPasswordAttempt
+$txtLLDate.Text = ($command1 |Select-Object LastLogonDate).LastLogonDate
 $txtLName.Text = ($command1 |Select-Object surname).surname
-$txtLO.Text = ($command1 |select LockedOut).LockedOut
+$txtLO.Text = ($command1 |Select-Object LockedOut).LockedOut
 
-if((($command1 |select manager).manager) -eq $null)
+#if((($command1 |Select-Object manager).manager) -eq $null)
+if($null -eq (($command1 |Select-Object manager).manager))
 {
 $txtMngr.Text = ""
 }else 
 {
-$txtMngr.Text = ((($command1 |select manager).manager).Trim("CN=")).SUBSTRING(0,((($command1 |select manager).manager).Trim("CN=").indexOf(',')))
+$txtMngr.Text = ((($command1 |Select-Object manager).manager).Trim("CN=")).SUBSTRING(0,((($command1 |Select-Object manager).manager).Trim("CN=").indexOf(',')))
 }
-$txtPG.Text = (((($command1 |select PrimaryGroup).PrimaryGroup).Trim("CN=")).substring(0,((($command1 |select PrimaryGroup).PrimaryGroup).Trim("CN=")).IndexOf(',')))
-$txtPLS.Text = ($command1 |select PasswordLastSet).PasswordLastSet
-$txtAcCreDate.Text = ($command1 |select Created).Created
-$txtAcExDate.Text = ($command1 |select AccountExpirationDate).AccountExpirationDate
+$txtPG.Text = (((($command1 |Select-Object PrimaryGroup).PrimaryGroup).Trim("CN=")).substring(0,((($command1 |Select-Object PrimaryGroup).PrimaryGroup).Trim("CN=")).IndexOf(',')))
+$txtPLS.Text = ($command1 |Select-Object PasswordLastSet).PasswordLastSet
+$txtAcCreDate.Text = ($command1 |Select-Object Created).Created
+$txtAcExDate.Text = ($command1 |Select-Object AccountExpirationDate).AccountExpirationDate
 
-if((($command1 |select directReports).directReports) -eq $null)
+#if((($command1 |Select-Object directReports).directReports) -eq $null)
+if($null -eq (($command1 |Select-Object directReports).directReports))
 {
 $txtPCName.Text = ""
 }else {
-    foreach ($item in (($command1 |select directReports).directReports))
+    foreach ($item in (($command1 |Select-Object directReports).directReports))
         {
             $txtDR.AppendText((($item.Trim("CN=")).substring(0,($item.Trim("CN=")).IndexOf(','))) + "`n")
         }
 }
-
-if((($command1 |select managedObjects).managedObjects) -eq $null)
+#if((($command1 |Select-Object managedObjects).managedObjects) -eq $null)
+if($null -eq (($command1 |Select-Object managedObjects).managedObjects))
 {
 $txtPCName.Text = ""
 }
 else {
-    foreach ($item in (($command1 |select managedObjects).managedObjects))
+    foreach ($item in (($command1 |Select-Object managedObjects).managedObjects))
         {
             $txtPCName.AppendText((($item.Trim("CN=")).substring(0,($item.Trim("CN=")).IndexOf(','))) + "`n")
         }
 }
  
 
-if((($command1 |select memberof).memberof) -eq $null)
+#if((($command1 |Select-Object memberof).memberof) -eq $null)
+if($null -eq (($command1 |Select-Object memberof).memberof))
 {
 $txtMBRO.Text = ""
 }
 else {
-    foreach ($item in (($command1 |select memberof).memberof))
+    foreach ($item in (($command1 |Select-Object memberof).memberof))
         {
             $txtMBRO.AppendText((($item.Trim("CN=")).substring(0,($item.Trim("CN=")).IndexOf(','))) + "`n")
         }
@@ -442,8 +445,6 @@ $txtAcExDate.Text = ""
 }
 
 #endregion User
-
-
 
 #region Computer
 #Find Input Text box from created XAML Window and store it in variable.
@@ -493,37 +494,37 @@ $txtSerial.Text = ""
 $inputecomputername = $txtComputerName.Text
 $ccommand = Get-ADComputer $inputecomputername -Properties *
 
-$txtIPv4.Text = ($ccommand |select IPv4Address).IPv4Address
-$txtCert.Text = ($ccommand |select Certificates).Certificates
-$txtCPRName.Text = ($ccommand |select Name).Name
-$txtCrtd.Text = ($ccommand |select Created).Created
-$txtDescpn.Text = ($ccommand |select Description).Description
-$txtEbld.Text = ($ccommand |select Enabled).Enabled
-$txtFQDN.Text = ($ccommand |select DNSHostName).DNSHostName
-$txtLLD.Text = ($ccommand |select LastLogonDate).LastLogonDate
-$txtLtion.Text = ($ccommand |select Location).Location
+$txtIPv4.Text = ($ccommand |Select-Object IPv4Address).IPv4Address
+$txtCert.Text = ($ccommand |Select-Object Certificates).Certificates
+$txtCPRName.Text = ($ccommand |Select-Object Name).Name
+$txtCrtd.Text = ($ccommand |Select-Object Created).Created
+$txtDescpn.Text = ($ccommand |Select-Object Description).Description
+$txtEbld.Text = ($ccommand |Select-Object Enabled).Enabled
+$txtFQDN.Text = ($ccommand |Select-Object DNSHostName).DNSHostName
+$txtLLD.Text = ($ccommand |Select-Object LastLogonDate).LastLogonDate
+$txtLtion.Text = ($ccommand |Select-Object Location).Location
 
 
-if((($ccommand |select ManagedBy).ManagedBy) -eq $null)
+if((($ccommand |Select-Object ManagedBy).ManagedBy) -eq $null)
 {
 $txtManagedby.Text = ""
 }else {
-$txtManagedby.Text = (((($ccommand |select ManagedBy).ManagedBy).Trim("CN=")).substring(0,((($ccommand |select ManagedBy).ManagedBy).Trim("CN=")).IndexOf(',')))
+$txtManagedby.Text = (((($ccommand |Select-Object ManagedBy).ManagedBy).Trim("CN=")).substring(0,((($ccommand |Select-Object ManagedBy).ManagedBy).Trim("CN=")).IndexOf(',')))
 }
 
 
-$txtOS.Text = ($ccommand |select OperatingSystem).OperatingSystem
-$txtOSV.Text = ($ccommand |select OperatingSystemVersion).OperatingSystemVersion
-$txtOUC.Text = ($ccommand |select DistinguishedName).DistinguishedName
-$txtPGC.Text = (((($ccommand |select PrimaryGroup).PrimaryGroup).Trim("CN=")).substring(0,((($ccommand |select PrimaryGroup).PrimaryGroup).Trim("CN=")).IndexOf(',')))
-$txtSAN.Text = ($ccommand |select SamAccountName).SamAccountName
+$txtOS.Text = ($ccommand |Select-Object OperatingSystem).OperatingSystem
+$txtOSV.Text = ($ccommand |Select-Object OperatingSystemVersion).OperatingSystemVersion
+$txtOUC.Text = ($ccommand |Select-Object DistinguishedName).DistinguishedName
+$txtPGC.Text = (((($ccommand |Select-Object PrimaryGroup).PrimaryGroup).Trim("CN=")).substring(0,((($ccommand |Select-Object PrimaryGroup).PrimaryGroup).Trim("CN=")).IndexOf(',')))
+$txtSAN.Text = ($ccommand |Select-Object SamAccountName).SamAccountName
 $txtSerial.Text = ($ccommand).Serialnumber
 
-if((($ccommand |select MemberOf).MemberOf) -eq $null)
+if((($ccommand |Select-Object MemberOf).MemberOf) -eq $null)
 {
 $txtMOC.Text = ""
 }else {
-    foreach ($item in (($ccommand |select MemberOf).MemberOf))
+    foreach ($item in (($ccommand |Select-Object MemberOf).MemberOf))
     {
         $txtMOC.AppendText((($item.Trim("CN=")).substring(0,($item.Trim("CN=")).IndexOf(','))) + "`n")
     }
@@ -552,7 +553,57 @@ $txtsaman = $window.FindName("txtsaman")
 #Find Button from created XAML Window and store it in variable.
 $BtnGroup = $window.FindName("BtnGroup")
 #Declear acton for botton.
+$BtnGroup.Add_click({
+    $txtCD.text = ""
+    $txtgcat.text = ""
+    $txtgcn.text = ""
+    $txtgd.text = ""
+    $txtGDN.text = ""
+    $txtGManBy.text = ""
+    $txtgmemby.text = ""
+    $txtgml.text = ""
+    $txtGName.text = ""
+    $txtGS.text = ""
+    $txtPFAD.text = ""
+    $txtsaman.text = ""
 
+    
+   $inputgroupname = $txtGroupName.text
+   $gcommand = Get-ADGroup $inputgroupname -Properties *
+
+   $txtCD.text = ($gcommand|Select-Object Created).Created
+   $txtgcat.text = ($gcommand|Select-Object GroupCategory).GroupCategory
+   $txtgcn.text = ($gcommand|Select-Object CanonicalName).CanonicalName
+   $txtgd.text = ($gcommand|Select-Object Description).Description
+   $txtGDN.text = ($gcommand|Select-Object DistinguishedName).DistinguishedName
+   $txtGManBy.text = ((($gcommand|Select-Object ManagedBy).ManagedBy).Trim("CN=")).SUBSTRING(0,(((($gcommand|Select-Object ManagedBy).ManagedBy).Trim("CN=")).indexOf(',')))
+   $txtGName.text = ($gcommand|Select-Object Name).name
+   $txtGS.text = ($gcommand|Select-Object GroupScope).GroupScope
+   $txtPFAD.text = ($gcommand|Select-Object ProtectedFromAccidentalDeletion).ProtectedFromAccidentalDeletion
+   $txtsaman.text = ($gcommand|Select-Object SamAccountName).SamAccountName
+
+
+   if((($gcommand |Select-Object MemberOf).MemberOf) -eq $null)
+    {
+        $txtgmemby.text = ""
+    }else {
+        foreach ($item in (($gcommand |Select-Object MemberOf).MemberOf))
+        {
+            $txtgmemby.AppendText((($item.Trim("CN=")).substring(0,($item.Trim("CN=")).IndexOf(','))) + "`n")
+        }
+    }
+
+    if((($gcommand |Select-Object member).member) -eq $null)
+    {
+        $txtgml.text = ""
+    }else {
+        foreach ($item in (($gcommand |Select-Object member).member))
+        {
+            $txtgml.AppendText((($item.Trim("CN=")).substring(0,($item.Trim("CN=")).IndexOf(','))) + "`n")
+        }
+    }
+
+})
 #endregion Group
 
 
@@ -568,6 +619,26 @@ $txtwmicmn = $window.FindName("txtwmicmn")
 #Find Button from created XAML Window and store it in variable.
 $BtnComputerWmic = $window.FindName("BtnComputerWmic")
 #Declear acton for botton.
+
+$BtnComputerWmic.Add_click({
+
+
+
+    $txtuuid.text = ""
+    $txtwmicCN.text = ""
+    $txtWmiccu.text = ""
+    $txtWmicManu.text = ""
+    $txtwmicmn.text = ""
+
+
+    $inputcomputernamefor = $txtComputerwmicName.text
+    $txtuuid.text = (Get-WmiObject -ComputerName $inputcomputernamefor -Class win32_computersystemproduct -Property UUID,Version |Select-Object Version,UUID).UUID
+    $txtwmicCN.text = $inputcomputernamefor
+    $txtWmiccu.text = (Get-WmiObject -ComputerName $inputcomputernamefor –Class Win32_ComputerSystem | Select-Object UserName).username
+    $txtWmicManu.text = (Get-WmiObject -ComputerName $inputcomputernamefor -Class Win32_BIOS -Property Manufacturer |Select-Object Manufacturer).Manufacturer
+    $txtwmicmn.text = (Get-WmiObject -ComputerName $inputcomputernamefor -Class win32_computersystemproduct -Property UUID,Version |Select-Object Version,UUID).version
+    
+})
 
 
 #endregion WMIC
