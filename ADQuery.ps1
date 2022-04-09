@@ -1,4 +1,4 @@
-﻿#region xaml GUI Form
+#region xaml GUI Form
 #Adding PresentationFramework for Run XAML Variable.
 Add-Type -AssemblyName PresentationFramework
 #Write XAML code in variable and Declear type as a xml.
